@@ -5999,6 +5999,18 @@
       "age": 994.3545545377854,
       "description": "Noisome cat singular fainted ululate accursed hideous loathsome. Accursed antiquarian shunned loathsome eldritch squamous immemorial. Blasphemous iridescence loathsome eldritch noisome unutterable immemorial fungus. Unutterable stench madness gibbering eldritch antediluvian unmentionable.",
       "id": 1000
+    },
+    {
+      "name": "Boogie",
+      "age": 1000,
+      "description": "Just your friendly neighborhood boogie monster",
+      "id": 1001
+    },
+    {
+      "name": {},
+      "age": {},
+      "description": {},
+      "id": 1002
     }
   ]
 }
