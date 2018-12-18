@@ -6,15 +6,53 @@ const monster = {
   "description": "Effulgence eldritch shunned foetid. Ululate gibbering tenebrous foetid iridescence daemoniac. Stench nameless gambrel. Amorphous furtive iridescence noisome. Foetid mortal nameless.",
   "id": 1
 }
+
+let defaultState = {
+  pageNumber: 1
+};
+
+// console.log(defaultState.pageNumber)
+
+function nav(event) {
+  console.log('Inside of nav(): ', event.target.id, 'pageNumber: ', defaultState.pageNumber);
+
+  const direction = event.target.id;
+  const monsterContainer = document.querySelector('div#monster-container');
+
+  while (monsterContainer.hasChildNodes()) {
+    monsterContainer.removeChild(monsterContainer.firstChild);
+  };
+
+  if (defaultState.pageNumber === 1) {
+    if (direction === 'back') {
+      console.log("We can't go back! This is the first page!");
+    } else {
+      defaultState.pageNumber += 1;
+      fetchMonsters();
+    };
+  } else if (defaultState.pageNumber > 1) {
+      if (direction === 'back') {
+        defaultState.pageNumber -= 1
+        fetchMonsters();
+      } else {
+        defaultState.pageNumber += 1;
+        fetchMonsters();
+      };
+  };
+};
+
 document.addEventListener("DOMContentLoaded", initPage)
 
 function initPage (){
-fetchMonsters()
-addFormHandler()
-
+  fetchMonsters()
+  addFormHandler()
+  addNavHandlers()
 }
+
 function fetchMonsters(){
-  fetch('http://localhost:3000/monsters/?_limit=50')
+  console.log('Inside of fetchMonsters(): ', defaultState.pageNumber)
+
+  fetch(`http://localhost:3000/monsters/?_limit=50&_page=${defaultState.pageNumber}`)
     .then(function(resp) {
       return resp.json();
     })
@@ -23,10 +61,8 @@ function fetchMonsters(){
     });
 }
 
-
 function showMonster(monster) {
   // Find HTML to put the monster inspect
-  // console.log('inside a monster', monster)
   let monsterDiv = document.querySelector('#monster-container');
 
   // use innerHTML = monster string
@@ -37,12 +73,11 @@ function showMonster(monster) {
   `
 };
 
-// Create Monster Form
+// Create Monster Form:
 
 function addFormHandler() {
     var formContainer = document.querySelector('#new-monster-form')
     formContainer.addEventListener('submit', processNewMonster)
-console.log('inside addFormHandler')
 };
 
 function processNewMonster() {
@@ -70,4 +105,14 @@ function processNewMonster() {
       return resp.json()
     }).then(showMonster)
     console.log('inside processNewMonster')
+};
+
+// Setup Forward and Back buttons:
+
+function addNavHandlers() {
+  const backButton = document.querySelector('button#back');
+  const forwardButton = document.querySelector('button#forward');
+
+  backButton.addEventListener('click', nav);
+  forwardButton.addEventListener('click', nav);
 };
