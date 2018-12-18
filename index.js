@@ -1,5 +1,5 @@
 // console.log('Hi')
-const SERVER_URL = 'http://localhost:3000/monsters/?_limit=50';
+const SERVER_URL = 'http://localhost:3000/monsters';
 const monster = {
   "name": "Chronos",
   "age": 4005.302453418598,
@@ -14,7 +14,7 @@ addFormHandler()
 
 }
 function fetchMonsters(){
-  fetch(SERVER_URL)
+  fetch('http://localhost:3000/monsters/?_limit=50')
     .then(function(resp) {
       return resp.json();
     })
@@ -42,28 +42,32 @@ function showMonster(monster) {
 function addFormHandler() {
     var formContainer = document.querySelector('#new-monster-form')
     formContainer.addEventListener('submit', processNewMonster)
+console.log('inside addFormHandler')
 };
 
 function processNewMonster() {
-  var name = document.querySelector('#name-input');
-  var age = document.querySelector('#age-input');
-  var description = document.querySelector('#description-input');
+  var name = document.querySelector('#name-input').value;
+  var age = document.querySelector('#age-input').value;
+  var description = document.querySelector('#description-input').value;
 
   var request = new Request(SERVER_URL);
+  var body = JSON.stringify({
+    name: name,
+    age: age,
+    description: description
+  })
+  debugger
   var options = {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({
-      name: name,
-      age: age,
-      description: description
-    })
+    body: body
   };
 
   fetch(request, options)
     .then(function(resp) {
       return resp.json()
     }).then(showMonster)
+    console.log('inside processNewMonster')
 };
